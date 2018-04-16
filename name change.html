@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Name change</title>
+        <meta charset="UTF-8">
+   
+    
+    <body>
+        <div >
+
+            <div >
+            <p>请选择姓名坐标编码文件</p>
+            <input type="file" id="input">
+            <br>
+            <br>
+            <input type="button" value="绘制" onclick="Drawname()">
+            <input type="button" value="左斜变换" onclick="zx()">
+            <input type="button" value="耸肩变换" onclick="sj()">
+            <input type="button" value="比例变换" onclick="bili()">
+            <input type="button" value="旋转变换" onclick="xz()">
+            <input type="button" value="对称变换" onclick="dc()">
+            <input type="button" value="平移变换" onclick="py()">
+            </div>
+            <br>
+            <div >
+                <canvas id="canv" width="10000px" height="3000px"></canvas>
+            </div>
+        </div>
+    
+    <script type="text/javascript">
+    function Point(x,y)
+        {
+            this.x=x;
+            this.y=y;
+        }
+        var A=new Array();
+        var N=0;
+        function Drawname()
+        {   
+            
+            var inputfile = document.getElementById("input").files[0];
+            var reader = new FileReader();
+            reader.readAsText(inputfile);
+            reader.onload=function(e)
+            {   
+                var text=reader.result.split("\r\n");
+           
+             
+                A[N]=new Array();
+        
+                var l=text.length;
+                var judge=0;
+                for(i=1;i<l-1;i++) 
+                {   
+                    
+                    if(text[i]!="END")
+                    {   
+                        if(text[i].length!=2)
+                        {
+                        var x;
+                        var y;
+                        x=text[i].split(",")[0];
+                        y=text[i].split(",")[1];
+                        A[N][judge]=new Point(x,y);
+                        judge=judge+1;
+                        }
+                    }
+                    else
+                    {
+                        judge=0;
+                        N=N+1;
+                        A[N]=new Array();
+                    }
+                }
+                var canvas = document.getElementById("canv");
+                var cxt = canvas.getContext("2d");
+                cxt.beginPath();
+                cxt.lineWidth = 2;
+                for(i=0;i<N+1;i++)
+                {   
+                    var l=A[i].length;
+                    for(j=0;j<l-1;j++)
+                    {
+                         
+                        cxt.moveTo((A[i][j].x)*10,(A[i][j].y)*10);
+                        cxt.lineTo((A[i][j+1].x)*10,(A[i][j+1].y)*10);
+                        
+                    }
+                }
+                cxt.stroke();
+                
+            }
+        
+        }
+            //左斜变换
+            function zx() {
+                var canvas = document.getElementById("canv");
+                var cxt = canvas.getContext("2d");
+                cxt.clearRect(0, 0, 10000, 3000);
+                cxt.beginPath();
+                cxt.lineWidth = 2;
+                for (i = 0; i < N + 1; i++) {
+                    for (j = 0; j < A[i].length - 1; j++) {
+                        cxt.moveTo(( A[i][j].x) * 10 + ( A[i][j].y) * 0.3 * 10, (A[i][j].y) * 10);
+                        cxt.lineTo(( A[i][j + 1].x) * 10 + ( A[i][j + 1].y) * 0.3 * 10, (A[i][j + 1].y) * 10);
+                    }
+                }
+                cxt.stroke();
+            }
+
+            //耸肩变换
+            function sj() {
+                var canvas = document.getElementById("canv");
+                var cxt = canvas.getContext("2d");
+                cxt.clearRect(0, 0, 10000, 3000);
+                cxt.beginPath();
+                cxt.lineWidth = 2;
+                for (i = 0; i < N + 1; i++) {
+                    for (j = 0; j < A[i].length - 1; j++) {
+                        cxt.moveTo(( A[i][j].x) * 10 , (A[i][j].y) * 10-(A[i][j].x) * 10*0.2);
+                        cxt.lineTo(( A[i][j + 1].x) * 10  , (A[i][j + 1].y) * 10-(A[i][j + 1].x) * 10*0.2);
+                    }
+                }
+                cxt.stroke();
+            }
+            //比例变换
+            function bili() {
+                var canvas = document.getElementById("canv");
+                var cxt = canvas.getContext("2d");
+                cxt.clearRect(0, 0, 10000, 3000);
+                cxt.beginPath();
+                cxt.lineWidth = 2;
+                for (i = 0; i < N + 1; i++) {
+                    for (j = 0; j < A[i].length - 1; j++) {
+                        cxt.moveTo(( A[i][j].x) * 10*0.5 , (A[i][j].y) * 10*0.5);
+                        cxt.lineTo(( A[i][j + 1].x) * 10*0.5  , (A[i][j + 1].y) * 10*0.5);
+                    }
+                }
+                cxt.stroke();
+            }
+            //旋转变换
+            function xz() {
+                var canvas = document.getElementById("canv");
+                var cxt = canvas.getContext("2d");
+                cxt.clearRect(0, 0, 10000, 3000);
+                cxt.beginPath();
+                cxt.lineWidth = 2;
+                for (i = 0; i < N + 1; i++) {
+                    for (j = 0; j < A[i].length - 1; j++) {
+                        cxt.moveTo((A[i][j].x)*10*0.7+(A[i][j].y)*10*0.7,(A[i][j].x)*10*0.7-(A[i][j].y)*10*0.7+100);
+                        cxt.lineTo((A[i][j+1].x)*10*0.7+(A[i][j+1].y)*10*0.7,(A[i][j+1].x)*10*0.7-(A[i][j+1].y)*10*0.70+100);
+                    }
+                }
+                cxt.stroke();
+            }
+            //对称变换
+            function dc() {
+                var canvas = document.getElementById("canv");
+                var cxt = canvas.getContext("2d");
+                cxt.clearRect(0, 0, 10000, 3000);
+                cxt.beginPath();
+                cxt.lineWidth = 2;
+                for (i = 0; i < N + 1; i++) {
+                    for (j = 0; j < A[i].length - 1; j++) {
+                        cxt.moveTo(( A[i][j].x) * 10+2*(500-( A[i][j].x) * 10) , (A[i][j].y) * 10);
+                        cxt.lineTo(( A[i][j + 1].x) * 10 +2*(500-( A[i][j+1].x) * 10) , (A[i][j + 1].y) * 10);
+                    }
+                }
+                cxt.stroke();
+            }
+            //平移变换
+            function py() {
+                var canvas = document.getElementById("canv");
+                var cxt = canvas.getContext("2d");
+                cxt.clearRect(0, 0, 10000, 3000);
+                cxt.beginPath();
+                cxt.lineWidth = 2;
+                for (i = 0; i < N + 1; i++) {
+                    for (j = 0; j < A[i].length - 1; j++) {
+                        cxt.moveTo(( A[i][j].x) * 10 +300, (A[i][j].y) * 10);
+                        cxt.lineTo(( A[i][j + 1].x) * 10 +300 , (A[i][j + 1].y) * 10);
+                    }
+                }
+                cxt.stroke();
+            }
+    </script>
+</head> 
+<body>
